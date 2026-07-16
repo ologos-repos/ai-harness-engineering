@@ -81,7 +81,7 @@ Mitigating requirements are cited by domain name and number, not by exact requir
 
 **Affected quality characteristics.** Functional suitability (primary), Reliability, Robustness, Controllability.
 
-**Mitigating requirements.** §3 Tool engineering — preconditions that validate a target exists and matches its declared type before execution, and postcondition checks; §7 Policy enforcement — real-target resolution rather than surface-pattern matching, so the *resolved* target is what the gate sees; §11 Evaluation — component and adversarial evaluation measuring fabrication rates against the tool surface.
+**Mitigating requirements.** §3 Tool engineering — preconditions that validate a target exists and matches its declared type before execution, and postcondition checks; §7 Policy enforcement — real-target resolution rather than surface-pattern matching, so the *resolved* target is what the gate sees; §11 Evaluation — component and adversarial evaluation measuring fabrication rates against the tool surface, including the schema-level claim-verification pattern in [`model-construct/mxh-p/`](../model-construct/mxh-p/) (a completion claim cannot validate without evidence of an actual planned-generated-evaluated chain, structurally refusing to treat an unverified "this is done" as equivalent to a verified one).
 
 **Verification pointer.** §3's precondition/postcondition verification and §7.4's disguised-target tests (renamed paths, remotes under unexpected local names). A failure surfaces as an action executing against a target that precondition validation should have rejected.
 

@@ -26,7 +26,7 @@ Later in the same drafting effort, **thinx** itself was also given a dedicated e
 | Entry | AHES domains realized | What it demonstrates |
 |---|---|---|
 | [`grok-console/`](grok-console/) | §4 Agent engineering, §7 Policy enforcement (alt. realization), §10 Evidence engineering, §16 Substrate portability | A complete, independently-designed governed harness on a different model substrate |
-| [`mxh-p/`](mxh-p/) | §16 Substrate portability (canonical mechanism) | A generic, reusable portability kernel — not one deployment's ad hoc solution, but a package multiple harnesses depend on |
+| [`mxh-p/`](mxh-p/) | §11 Evaluation (primary — claim-verification gate), §16 Substrate portability (secondary — a consequence of packaging) | A schema-level gate that structurally refuses unverified completion claims — corrected 2026-07-16 from an earlier mischaracterization as primarily a portability mechanism |
 | [`thinx-codex/`](thinx-codex/) | Part 5 Conformance (assessment procedure) | The only exemplar of automated, CI-enforced structural conformance checking rather than runtime enforcement |
 | [`thinx/`](thinx/) | §1–3, §6–15 (13 domains; not §4, §5, §16) | The author's own harness, consolidating its inline Part 2 citations — the broadest single-deployment realization, and the least independent (self-citation bias named explicitly) |
 
