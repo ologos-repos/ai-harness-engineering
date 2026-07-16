@@ -1,8 +1,10 @@
 # Model Construct — Worked Realizations
 
-**Status: v0.1 — four exemplars: grok-console, mxh-p, thinx-codex, and a consolidated thinx entry. Redacted to abstraction level 2026-07-16 — see note below.**
+**Status: v0.1 — five entries: four real-deployment exemplars (grok-console, mxh-p, thinx-codex, thinx) plus a synthetic composite (the AHES Reference Harness) covering all sixteen domains. Redacted to abstraction level 2026-07-16 — see note below.**
 
-Part 2 of AHES specifies domains abstractly. This directory grounds them: each entry maps a real, running harness's architecture onto specific AHES clauses. This is the "informative examples" material referenced throughout Part 2 §N.6, given room to be complete rather than a paragraph.
+Part 2 of AHES specifies domains abstractly. This directory grounds them: each entry maps a harness's architecture onto specific AHES clauses. This is the "informative examples" material referenced throughout Part 2 §N.6, given room to be complete rather than a paragraph.
+
+**Start with [`ahes-reference-harness/`](ahes-reference-harness/) if you want the complete picture.** It's the only entry that covers all sixteen domains in one coherent design, because — unlike every other entry — it isn't a citation of a real system. It's a synthetic composite: patterns generalized from the real exemplars below plus ordinary distributed-systems and security-engineering practice, deliberately abstracted so nothing here is any one deployment's IP. Read its own README for exactly what that means and the disclosure discipline it holds to (including an explicit constraint against drawing on `ologos-repos/Hermit`'s specifics for the workflow domain). The four entries below it are the real-deployment evidence that the patterns it generalizes actually get built, not just imagined.
 
 **Why this exists.** A standard that can only cite its own author's harness (thinx) as evidence is not yet demonstrating substrate-generality — the property Part 2 §16 requires as a named conformance target. Each entry here is chosen specifically to extend or contrast with the existing thinx-based examples in the standard, not duplicate them.
 
@@ -25,6 +27,7 @@ Later in the same drafting effort, **thinx** itself was also given a dedicated e
 
 | Entry | AHES domains realized | What it demonstrates |
 |---|---|---|
+| [`ahes-reference-harness/`](ahes-reference-harness/) | All 16 domains | Synthetic composite — a complete, coherent design generalized from the patterns below; not a citation of any real system |
 | [`grok-console/`](grok-console/) | §4 Agent engineering, §7 Policy enforcement (alt. realization), §10 Evidence engineering, §16 Substrate portability | A complete, independently-designed governed harness on a different model substrate |
 | [`mxh-p/`](mxh-p/) | §11 Evaluation (primary — claim-verification gate), §16 Substrate portability (secondary — a consequence of packaging) | A schema-level gate that structurally refuses unverified completion claims — corrected 2026-07-16 from an earlier mischaracterization as primarily a portability mechanism |
 | [`thinx-codex/`](thinx-codex/) | Part 5 Conformance (assessment procedure) | The only exemplar of automated, CI-enforced structural conformance checking rather than runtime enforcement |

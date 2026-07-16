@@ -30,7 +30,7 @@ Emerging agentic-AI standards work (NIST AI Agent Standards Initiative; IEEE P37
 | [Part 5](standard/part-5-conformance.md) | Conformance levels and assessment | Drafted — assessment procedure, claim format, OAgents crosswalk |
 | [Annex A](standard/annex-a-reference-implementations.md) | Reference-implementation conformance studies (informative) | Drafted — 4 exemplars indexed |
 | [Normative references](references/normative-references.md) | Standards base with verification status | Drafted |
-| [Model construct](model-construct/) | Worked realizations against real deployments | 4 exemplars: thinx, grok-console, mxh-p, thinx-codex |
+| [Model construct](model-construct/) | Worked realizations: 4 real-deployment exemplars + 1 synthetic composite | thinx, grok-console, mxh-p, thinx-codex, and the all-16-domain AHES Reference Harness |
 
 ## Normative stack
 
