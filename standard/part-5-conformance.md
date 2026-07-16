@@ -18,7 +18,39 @@ The level structure deliberately parallels assurance-maturity profiles such as O
 
 ## 5.3 Relationship to OAgents-standard
 
-Complementary, non-overlapping: **OAgents** profiles *organizational assurance* (who attests, at what maturity, against NIST AI RMF); **AHES** specifies *how the harness artifact is engineered*. An OAgents attestation can cite an AHES conformance claim as its engineering evidence; AHES L2/L3 evidence feeds OAgents documented-evidence review directly. Crosswalk table to be drafted with the OAgents maintainer.
+Complementary, non-overlapping: **OAgents** profiles *organizational assurance* (who attests, at what maturity, against NIST AI RMF); **AHES** specifies *how the harness artifact is engineered*. An OAgents attestation can cite an AHES conformance claim as its engineering evidence; AHES L2/L3 evidence feeds OAgents documented-evidence review directly. §5.3.1 below draws the crosswalk out in full.
+
+### 5.3.1 OAgents crosswalk
+
+OAgents-standard (JD Longmire, CC BY 4.0; concept DOI [10.5281/zenodo.19425020](https://doi.org/10.5281/zenodo.19425020); canonical spec now at [`ologos-repos/aide-canon/constructs/oagents/`](https://github.com/ologos-repos/aide-canon/tree/main/constructs/oagents)) specifies **26 controls across 7 categories**, **3 conformance levels**, and alignment to **all four NIST AI RMF functions** (Govern / Map / Measure / Manage). Its conformance basis is observable evidence artifacts rather than assertions — the same posture as AHES §5.2. Both frameworks share an author, and both converged independently on the same three-tier assurance shape; the crosswalk below records that convergence and then draws the scope boundary honestly.
+
+**Level crosswalk.** The two ladders line up almost verbatim, because both derive from the self-assessment → documented-evidence-review → third-party-verification maturity progression:
+
+| AHES level (§5.2) | OAgents level | Shared evidence basis |
+|---|---|---|
+| **L1 Documented** | **1 · OAgent-Basic** (human oversight standard) | Self-attested inventory — artifacts exist and are inspectable; no independent review |
+| **L2 Enforced** | **2 · OAgent-Standard** (exception-based oversight) | Documented evidence review — an assessor maps captured runtime evidence to requirement IDs / controls |
+| **L3 Verifiable** | **3 · OAgent-Autonomous** (minimal oversight) | Third-party verification — evidence is attributable and sufficient for an independent party to reconstruct the claim |
+
+The language already lines up closely enough that a single evidence architecture can substantiate both a claimed AHES level and the corresponding OAgents level without a second collection pass.
+
+**Scope boundary — what each side actually assesses.** The level ladders match; the *subject* of assessment does not. OAgents' 7 categories are behavioral and operational controls on an **already-running agent** — feedback memory, named failure-mode catalogs, session lifecycle, incident tracking, hallucination detection. AHES' 16 domains (Part 2) are engineering requirements on the **harness artifact that hosts the agent** — context construction, tool schemas, policy-enforcement mechanics, evidence architecture, substrate portability. Some OAgents categories map closely onto specific AHES domains; others sit above the harness surface entirely and are the honest answer to "AHES does not specify this."
+
+| OAgents category (control focus) | Closest AHES domain(s) | Relationship |
+|---|---|---|
+| **Enforcement Mechanisms** — executable action gates, severity escalation, protocol-compliance verification | **§7 Policy enforcement** (pre/runtime/post controls, hard stops); **§8 Human authority** (escalation) | Close map — AHES §7 engineers the mechanism OAgents attests is operating |
+| **Operational Discipline** — session lifecycle, impact-level classification, incident tracking, structured logging | **§12 Operational assurance** (monitoring, incident response); **§4 Agent engineering** (termination/recovery); **§10 Evidence engineering** (structured logging) | Close map across three domains |
+| **Quality Gates** — independent output review, process-enforcement gates, security audit, schema validation | **§11 Evaluation**; **§3 Tool engineering** (schema validation); **§14 Security architecture** (audit) | Partial map — AHES engineers the gate substrate; the *review discipline* is OAgents-side |
+| **Knowledge Injection** — persistent memory, domain skill loading, lessons-learned pipeline | **§6 Memory engineering** (scope, persistence, provenance) | Partial map — AHES engineers the store; the *injection/lessons-learned practice* is OAgents-side |
+| **Project Governance** — centralized work tracking, platform sovereignty, asset registry, vendor independence | **§16 Substrate portability** (vendor independence); **§15 Configuration baseline** (asset/version registry) | Partial map — organizational-sovereignty controls exceed the harness artifact |
+| **Behavioral Shaping** — feedback memory, failure-mode catalogs, context-degradation detection | **§2 Context engineering** (context degradation); **§6 Memory engineering** (feedback memory) | Weak map — primarily *agent-behavior quality*, not harness engineering |
+| **Anti-Hallucination** — state verification, memory-staleness detection, hallucination tracking | **§6 Memory engineering** (staleness) touches it; otherwise unmapped | **AHES does not specify this** — an AHES-conformant harness still needs an OAgents-style behavioral profile layered on top |
+
+The boundary is not "OAgents assures, AHES engineers" applied uniformly. For **Enforcement Mechanisms** and **Operational Discipline** the two frameworks genuinely engineer and attest the *same* controls from two sides. For **Behavioral Shaping** and **Anti-Hallucination** they do not overlap: those categories are properties of agent behavior that a well-engineered harness enables but does not itself guarantee, so an AHES conformance claim is silent on them by design. Composition, not subsumption: neither framework makes the other redundant.
+
+**Worked composition.** An organization running one deployment claims against both. It engineers its policy layer, evidence trace, and operational monitoring to AHES **L2 Enforced** for **§7 (Policy enforcement)**, **§10 (Evidence engineering)**, and **§12 (Operational assurance)** — producing captured, requirement-ID-mapped runtime evidence. That same evidence body is then the engineering-evidence input to an OAgents **Standard-level** attestation for the **Enforcement Mechanisms** and **Operational Discipline** categories: the OAgents assessor does not re-collect the harness evidence, they map the AHES L2 records to the OAgents controls and add the organizational-assurance layer (who attests, at what oversight maturity) that AHES does not carry. For **Anti-Hallucination**, there is no AHES claim to cite; the organization satisfies that category with an OAgents-native behavioral profile on top of the AHES-conformant harness. One evidence architecture, two claims, no double collection.
+
+*(AHES' own reference architecture is MxM (multi-mode meta-harness); the crosswalk here is framework-to-framework and does not depend on that reference implementation.)*
 
 ## 5.4 Per-level requirement selection
 
@@ -34,6 +66,8 @@ Insertion processes from Part 1 bind through the same structural rule: a Part 1 
 ## 5.5 Assessment procedure
 
 An assessment produces a disposition against a stated claim. The procedure is:
+
+*Informative — an automated-tooling realization of this procedure is worked in [`model-construct/thinx-codex/part5-conformance.md`](../model-construct/thinx-codex/part5-conformance.md): a fail-closed CI gate family over a traceable artifact graph, mapping the requirement-selection and disposition steps below onto executable structural checks.*
 
 1. **Scoping statement.** The assessment **shall** open with a written scope: the harness deployment assessed, the configuration baseline (→ §15) it was assessed at, the conformance level claimed, and the assessing party. This is the claim under test (§5.7).
 2. **Clause applicability matrix.** For each of the sixteen Part 2 domains and each Part 1 insertion, the assessment **shall** record applicable or inapplicable. A domain is inapplicable only when the deployment makes no claim the domain governs — for example, §16 Substrate portability does not apply to a single-model deployment that makes no portability claim, and §9 Principal & authority delegation depth is minimal where no agent delegates onward.
@@ -56,4 +90,4 @@ A conformance claim is a data record, not free prose, so that a claim can be val
 
 ## 5.8 Reference-implementation conformance studies
 
-- Reference-implementation conformance studies as informative annexes (candidate subjects: thinx (Claude Code), ThinxS (Go), nemo-harness). [`model-construct/`](../model-construct/) has begun this against grok-console and mxh-p for §4/§7/§10/§16, at an architectural-pattern level of detail (private-repo sources, redacted to abstraction — see that directory's README); **thinx-codex**'s fail-closed CI conformance gates (checking authored strategy/requirements/architecture/verification artifacts against a structural integrity rule set) are a strong candidate for the Part 5 assessment-procedure exemplar specifically, flagged but not yet reviewed in depth
+Reference-implementation conformance studies are informative, not normative — see [Annex A](annex-a-reference-implementations.md) for the current index of exemplars, what each demonstrates, and what remains unattempted. [`model-construct/`](../model-construct/) is the underlying source directory; Annex A is the document-level summary of it. ThinxS (Go) and nemo-harness remain candidate subjects not yet attempted.

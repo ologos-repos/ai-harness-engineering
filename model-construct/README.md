@@ -1,6 +1,6 @@
 # Model Construct — Worked Realizations
 
-**Status: v0.1 — one primary exemplar (grok-console), one kernel reference (mxh-p). Redacted to abstraction level 2026-07-16 — see note below.**
+**Status: v0.1 — four exemplars: grok-console, mxh-p, thinx-codex, and a consolidated thinx entry. Redacted to abstraction level 2026-07-16 — see note below.**
 
 Part 2 of AHES specifies domains abstractly. This directory grounds them: each entry maps a real, running harness's architecture onto specific AHES clauses. This is the "informative examples" material referenced throughout Part 2 §N.6, given room to be complete rather than a paragraph.
 
@@ -17,7 +17,9 @@ Two candidates were on the table: **thinx-codex** (a Codex-native sibling to thi
 - It depends on a **separate, generic portability package**, which makes §16 (substrate portability) concrete rather than aspirational: there is an actual shared, versioned package, with a schema-defined governing payload, that more than one independent harness consumes.
 - It cleanly separates several agent roles by individual contract (identity, access level, scope boundary, done-criteria), giving §4 a realization that isn't just "the harness has subagents."
 
-**thinx-codex** (the canonical repository, not a deployment snapshot of it) runs a fail-closed conformance gate in continuous integration, checking authored strategy/requirements/architecture/verification artifacts against a small set of structural integrity rules (no orphaned architecture, no unallocated requirement, referential integrity, acyclic dependencies, and similar), alongside sibling gates for its memory, execution-substrate, and tradecraft layers. This traceability discipline is close kin to AHES's own requirement-ID scheme, and the fail-closed/fail-open rule split is a candidate pattern for Part 5's level structure. It looks like the strongest candidate for a **future Part 5 (conformance) exemplar** — flagged as follow-up rather than written up now, since this pass did not go deep enough into the gate mechanics to ground a clause mapping honestly, and any deeper write-up should stay at this same abstraction level.
+**thinx-codex** (the canonical repository, not a deployment snapshot of it) runs a fail-closed conformance gate in continuous integration, checking authored strategy/requirements/architecture/verification artifacts against a small set of structural integrity rules (no orphaned architecture, no unallocated requirement, referential integrity, acyclic dependencies, and similar), alongside sibling gates for its memory, execution-substrate, and tradecraft layers. This traceability discipline is close kin to AHES's own requirement-ID scheme, and the fail-closed/fail-open rule split is a candidate pattern for Part 5's level structure. Its Part 2 §7 potential was set aside as too close a restatement of thinx's own realization — but its **Part 5 (conformance-assessment)** potential was distinct enough to be worth the separate pass, and is now written up at [`thinx-codex/`](thinx-codex/): the standard's only exemplar of automated, CI-enforced structural conformance checking, as opposed to a runtime enforcement mechanism.
+
+Later in the same drafting effort, **thinx** itself was also given a dedicated entry (`thinx/`) consolidating the informative examples already scattered inline across most of Part 2 — see that entry's explicit note on why a self-citation is a weaker data point than an independently-designed exemplar, included rather than hidden.
 
 ## Contents
 
@@ -25,6 +27,8 @@ Two candidates were on the table: **thinx-codex** (a Codex-native sibling to thi
 |---|---|---|
 | [`grok-console/`](grok-console/) | §4 Agent engineering, §7 Policy enforcement (alt. realization), §10 Evidence engineering, §16 Substrate portability | A complete, independently-designed governed harness on a different model substrate |
 | [`mxh-p/`](mxh-p/) | §16 Substrate portability (canonical mechanism) | A generic, reusable portability kernel — not one deployment's ad hoc solution, but a package multiple harnesses depend on |
+| [`thinx-codex/`](thinx-codex/) | Part 5 Conformance (assessment procedure) | The only exemplar of automated, CI-enforced structural conformance checking rather than runtime enforcement |
+| [`thinx/`](thinx/) | §1–3, §6–15 (13 domains; not §4, §5, §16) | The author's own harness, consolidating its inline Part 2 citations — the broadest single-deployment realization, and the least independent (self-citation bias named explicitly) |
 
 ## How to add an exemplar
 

@@ -2,7 +2,7 @@
 
 **An Ologos product.** Normative engineering standard for the *AI harness* — the engineered software and control environment surrounding one or more AI models.
 
-**Status: Draft v0.1 — framing baseline.** Not yet released for conformance use.
+**Status: Draft v0.1 — full normative draft.** All parts and all sixteen Part 2 domains are drafted with numbered requirements; nothing here has had independent/external review. Not yet released for conformance use.
 
 ---
 
@@ -23,13 +23,14 @@ Emerging agentic-AI standards work (NIST AI Agent Standards Initiative; IEEE P37
 | Part | Title | Status |
 |---|---|---|
 | [Part 0](standard/part-0-scope-terms-conformance.md) | Scope, terms, and conformance language | Drafted |
-| [Part 1](standard/part-1-lifecycle.md) | Lifecycle processes | Skeleton |
-| [Part 2](standard/part-2-domains/README.md) | Harness domain clauses (16 domains) | Template + 1 worked clause |
-| [Part 3](standard/part-3-quality-allocation.md) | Quality characteristic allocation | Skeleton |
-| [Part 4](standard/part-4-risk-control-mapping.md) | Risk-to-control mapping | Skeleton |
-| [Part 5](standard/part-5-conformance.md) | Conformance levels and assessment | Skeleton |
+| [Part 1](standard/part-1-lifecycle.md) | Lifecycle processes | Drafted — 7 process insertions, 13 requirements |
+| [Part 2](standard/part-2-domains/README.md) | Harness domain clauses (16 domains) | Drafted — all 16; §7 Policy enforcement is the most-worked (two independent realizations) |
+| [Part 3](standard/part-3-quality-allocation.md) | Quality characteristic allocation | Drafted — allocation rule + incident-separability test |
+| [Part 4](standard/part-4-risk-control-mapping.md) | Risk-to-control mapping | Drafted — all 14 risks as full entries |
+| [Part 5](standard/part-5-conformance.md) | Conformance levels and assessment | Drafted — assessment procedure, claim format, OAgents crosswalk |
+| [Annex A](standard/annex-a-reference-implementations.md) | Reference-implementation conformance studies (informative) | Drafted — 4 exemplars indexed |
 | [Normative references](references/normative-references.md) | Standards base with verification status | Drafted |
-| [Model construct](model-construct/) | Worked realizations against real deployments (grok-console, mxh-p) | §4/§7/§10/§16 realized |
+| [Model construct](model-construct/) | Worked realizations against real deployments | 4 exemplars: thinx, grok-console, mxh-p, thinx-codex |
 
 ## Normative stack
 
@@ -47,7 +48,7 @@ AHES builds on, and does not replace:
 ## Provenance and related work
 
 - **Theoretical basis:** the [Harness Engineering research programme](https://github.com/agent-harness-engineering/harness-engineering) (Lakatos-governed; **MxM** — multi-mode meta-harness — reference architecture). The programme supplies theory and conformance evidence; AHES supplies the normative layer. Content reused under CC BY 4.0 with attribution.
-- **Complementary standard:** [OAgents-standard](https://github.com/ologos-corp) — organizational assurance profile (NIST AI RMF). OAgents specifies *who attests and at what level*; AHES specifies *how the artifact is engineered*. Cross-referenced in Part 5; the two do not overlap.
+- **Complementary standard:** [OAgents](https://github.com/ologos-repos/aide-canon/tree/main/constructs/oagents) (26 controls / 7 categories / 3 conformance levels; NIST AI RMF implementation profile; concept DOI [10.5281/zenodo.19425020](https://doi.org/10.5281/zenodo.19425020)) — organizational assurance profile for *running agents*. OAgents specifies *who attests and at what level*; AHES specifies *how the harness artifact hosting the agent is engineered*. Full crosswalk in [Part 5 §5.3.1](standard/part-5-conformance.md); the two are complementary, not overlapping — see that section for exactly where they do and don't map.
 
 ## Attribution
 

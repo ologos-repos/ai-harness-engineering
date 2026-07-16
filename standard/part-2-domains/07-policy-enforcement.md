@@ -31,6 +31,7 @@ The domain distinguishes three layers, all required:
 - **AHES-PE-07** — The policy document and the enforcement-point inventory **shall** be kept consistent: every hard stop in the document has an enforcement point; every enforcement point is disclosed in the document. Divergence in either direction is a conformance defect.
 - **AHES-PE-08** — Policy layers **shall** compose with, not replace, one another: the judgment layer handles action classes that structural matching cannot express (blast-radius judgment, unfamiliar state), and **should** treat structural gaps as flagged rather than trusted.
 - **AHES-PE-09** — A subset of hard stops **may** be designated *non-overridable* (e.g., actions on infrastructure owned by a third party). The override procedure **shall not** apply to these; their release requires changing the policy document itself under change control.
+- **AHES-PE-10** — The policy document **shall** state a conflict-priority rule for competing obligations (e.g., prohibitions outrank obligations outrank permissions), and **shall** state the default resolution when two same-tier obligations conflict with no clear priority between them. The default **shall** favor pausing for human input over silent resolution: an enforcement layer that resolves an unanticipated conflict on its own, rather than surfacing it, has substituted its own judgment for the policy document's.
 
 ## 7.4 Verification criteria
 
@@ -45,6 +46,7 @@ The domain distinguishes three layers, all required:
 | PE-07 | Analysis: automated cross-check (self-test) of document ↔ inventory, runnable at session/deployment start and in CI. |
 | PE-08 | Inspection: judgment-layer policy content is loaded at every session start and survives context boundaries (see Part 2 §2 pinning). |
 | PE-09 | Inspection: non-overridable set is named in the policy document; test that the override path refuses it. |
+| PE-10 | Inspection: policy document states the priority tier and same-tier default. **Adversarial test**: construct a scenario where two obligations conflict with no stated priority between them; verify the enforcement layer pauses for human input rather than resolving silently. |
 
 ## 7.5 Evidence requirements
 
@@ -56,4 +58,4 @@ The operating harness **shall** capture: every structural denial (action, matche
 
 **General pattern.** PE-02's adversarial framing follows from the domain's threat model: the policy's subject *is* the reasoning engine, so controls that depend on that engine's cooperation are judgment-layer by definition and cannot discharge hard-stop requirements.
 
-**Second realization (different substrate).** [`model-construct/grok-console/07-policy-enforcement.md`](../../model-construct/grok-console/07-policy-enforcement.md) maps the same requirement set onto a structurally different mechanism — a declarative deny-pattern catalog consumed by the model CLI's own native permission engine, rather than a wrapping hook — and surfaces a candidate additional requirement (an explicit conflict-priority rule for competing obligations) not yet in this clause's control set.
+**Second realization (different substrate).** [`model-construct/grok-console/07-policy-enforcement.md`](../../model-construct/grok-console/07-policy-enforcement.md) maps the same requirement set onto a structurally different mechanism — a declarative deny-pattern catalog consumed by the model CLI's own native permission engine, rather than a wrapping hook — and is the source of PE-10: that exemplar's documented conflict-priority rule (prohibitions outrank obligations outrank permissions, same-tier ties default to pausing for human input) is now folded into this clause's own control set rather than left as an external observation.
