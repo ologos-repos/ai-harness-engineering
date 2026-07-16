@@ -1,27 +1,50 @@
 # AHES Part 2 §11 — Evaluation
 
-**Status: Stub — purpose fixed; requirements to be drafted per [clause template](clause-template.md).**
+**Status: Draft v0.1 — worked clause (normative shape complete; requirement set subject to review)**
 
 ## 11.1 Purpose
 
-Evaluation governs how the harness and its components are tested: component, model-in-harness, tool, agent, workflow, adversarial, and mission-level evaluation, integrated into change control. Unengineered, the failure class is qualification by anecdote: changes ship because they seemed fine in the sessions someone happened to run.
+Evaluation governs how the harness and its components are tested before a change ships: component, model-in-harness, tool, agent, workflow, adversarial, and mission-level evaluation, integrated into change control. When this domain is unengineered, the failure class is **qualification by anecdote**: changes ship because they seemed fine in the sessions someone happened to run, with no defined bar, no reproducible regime, and no baseline against which "fine" is measured. Evaluation is the *pre-deployment* (pre-change) qualification gate: it answers *does this change meet the bar before it ships*. Its post-deployment counterpart — *is the running system still meeting the bar* — is operational assurance (→ §12); the two share a seam, because the passing result set an evaluation regime produces is exactly the baseline §12 monitors drift against (→ §11.3 EV-06). Evaluation is also the qualification step other domains cite as their promotion gate: model substitution (→ §1), prompt and instruction change control (→ Part 1), and any behavior-bearing baseline change (→ §15) are admitted only against a recorded evaluation result.
 
 ## 11.2 Required artifacts
 
-*TODO — `AHES-EV-A<n>` series.*
+- **AHES-EV-A1** — An **evaluation-regime specification** enumerating the evaluation levels the harness runs — component, model-in-harness, tool, agent, workflow, adversarial, and mission-level — and, for each, its scope, its inputs, and its pass/fail bar. Owner: harness maintainer. Change control: versioned with the configuration baseline (→ §15); changing a pass bar is a baseline change, not a tuning knob.
+- **AHES-EV-A2** — A **baseline results record**: the qualifying evaluation results for the current configuration baseline, bound to the model+version, instructions, tools, and policies in force when they were produced. This record is the reference §12 monitors drift against. Owner: harness maintainer. Change control: versioned; superseded only by a new passing run under a promoted baseline.
+- **AHES-EV-A3** — An **adversarial evaluation corpus**: the attack cases, red-team transcripts, and injection/bypass attempts maintained for the controls whose threat model includes the model itself (→ §2, §7). Owner: harness maintainer (security-reviewed). Change control: versioned; append-driven, growing from incidents and near-misses fed back from production (→ §12 OA-09).
+- **AHES-EV-A4** — A **change-control gate definition** stating which evaluation levels gate which change classes, and the accountable authority that accepts a passing result as sufficient for promotion. Owner: harness maintainer. Change control: versioned; released with the lifecycle process it enforces (→ Part 1).
 
 ## 11.3 Technical controls
 
-*TODO — `AHES-EV-<nn>` series.*
+- **AHES-EV-01** — A change to any behavior-bearing configuration element — model+version, instructions, tools, policies, or memory schema (→ §15) — **shall** be qualified by the evaluation regime (EV-A1) before promotion. Promotion without a recorded passing result is a conformance defect; the gate **shall** be structural in the change-control path, not a reviewer's discretion.
+- **AHES-EV-02** — Evaluation **shall** be multi-level. A change **shall** be evaluated at every level its blast radius reaches: component and tool level for a tool change (→ §3), agent and workflow level for a delegation or orchestration change (→ §4, §5), model-in-harness level for a model substitution (→ §1), and mission level for any change whose reach cannot be bounded below the whole. Evaluating only the level most convenient to run is qualification by anecdote in a narrower form.
+- **AHES-EV-03** — Models **shall** be evaluated *in harness* — integrated with the context construction, tools, and policy layer they will run under — not in isolation. A model's standalone benchmark score **shall not** discharge the model-in-harness requirement; this control is the qualification step §1 MM-04 cites as its promotion gate.
+- **AHES-EV-04** — The pass/fail bar for each evaluation level **shall** be defined before the change under evaluation, not fitted to the change's observed behavior after the fact. A bar adjusted to admit the change it was meant to gate is a circularity defect (→ Part 3 incident-separability discipline); bar changes are baseline changes under EV-A1's change control.
+- **AHES-EV-05** — Evaluations **shall** be reproducible: fixed inputs, the model+version recorded, and — where model output is non-deterministic — a defined sampling and a statistical pass bar, so that a re-run distinguishes genuine regression from sampling noise. An evaluation that cannot be re-run against the same inputs cannot establish a baseline and **shall not** be the basis of a qualification claim.
+- **AHES-EV-06** — A passing evaluation run **shall** be recorded as attributable evidence (→ §11.5) bound to the baseline it qualifies, and that recorded result set **shall** be the reference baseline handed to operational assurance (→ §12) as the definition of "meeting the bar." The evaluation baseline and the monitored baseline **shall not** diverge: what §11 qualifies is exactly what §12 watches for drift against.
+- **AHES-EV-07** — Adversarial evaluation **shall** be required for every control whose threat model includes the model itself — policy hard-stops (→ §7), injection resistance (→ §2), and privilege or trust-boundary escalation through fallback or delegation (→ §1, §4). Adversarial evaluation **shall** attempt to bypass the control, not merely confirm its happy path, and **shall** draw from the maintained corpus (EV-A3) so that a defeated attack stays defeated across future changes.
+- **AHES-EV-08** — Mission-level evaluation **shall** exercise the harness end-to-end against representative mission tasks and **shall** produce the measurements Part 3's quality-characteristic allocation assigns to the harness locus (functional suitability, reliability, robustness, controllability), so that a conformance claim rests on measured harness contribution rather than asserted intent (→ Part 3).
+- **AHES-EV-09** — The evaluation regime (EV-A1) and the set of promotable change classes **shall** be kept consistent: every change class that can reach production has a gating evaluation level, and every evaluation level names the change classes it gates. A change class with no gating level, or a level gating nothing, is a conformance defect — the same document↔coverage discipline §7 applies to policy.
 
 ## 11.4 Verification criteria
 
-*TODO — one criterion minimum per shall; adversarial verification where the threat model includes the model.*
+| Control | Method |
+|---|---|
+| EV-01 | Analysis of the change-control path: demonstrate the gate is structural (a promotion cannot complete without a recorded passing result). Inspection: for a sample of promoted changes, a predating passing result exists. |
+| EV-02 | Analysis: map a change's blast radius to the evaluation levels run; confirm coverage at every level the change reaches. Test with a deliberately cross-cutting change; verify multi-level evaluation fires. |
+| EV-03 | Inspection: model qualification records reference in-harness evaluation, not standalone benchmarks. Demonstration: run the model-in-harness suite and show it exercises context, tools, and policy together. |
+| EV-04 | Inspection: pass bars are versioned and timestamped predating the changes they gate. **Adversarial analysis**: attempt to promote a change by relaxing its bar; verify the relaxation is itself gated as a baseline change and is visible in the record. |
+| EV-05 | Test: re-run an evaluation against fixed inputs and confirm reproducible classification; for non-deterministic output, confirm the sampling and statistical bar are defined and applied. |
+| EV-06 | Inspection: the recorded passing result set is the same artifact §12 references as its monitored baseline (EV-A2 ↔ §12 OA-A1). Analysis: confirm no second, divergent "operational baseline" exists. |
+| EV-07 | **Adversarial test**: execute the corpus (EV-A3) against the current baseline — injection payloads, hard-stop bypass attempts, fallback/delegation escalation; verify each is defeated, and that a previously-defeated case is re-run and still defeated after a change. |
+| EV-08 | Demonstration: run the mission-level suite end-to-end; confirm it emits the Part 3 harness-locus measurements. Analysis of the measurement set against Part 3's allocation. |
+| EV-09 | Analysis: automated cross-check (self-test) of change-class set ↔ gating-level set, runnable in CI and at release. |
 
 ## 11.5 Evidence requirements
 
-*TODO — runtime capture binding into §10.*
+The operating harness **shall** capture, for every qualification run: the evaluation levels exercised, the inputs and the model+version they ran against, the pass/fail outcome per level, the adversarial cases executed and their results, and the configuration baseline the run qualifies. This is sufficient to answer, post-hoc: *what was evaluated, against which baseline, at which levels, with what result, and which change did it admit or block*. The passing result set is retained as the reference baseline for operational-assurance drift monitoring (→ §12). Evidence flows into the §10 evidence architecture; qualification records are retained under the configuration-baseline retention rule (→ §15), because a promotion's justification is only auditable as long as the result that gated it survives.
 
 ## 11.6 Informative examples
 
-*TODO — reference-implementation realizations.*
+**Lifecycle-integrated evaluation gate (MxM reference architecture).** A multi-mode meta-harness realizes EV-01 as a pass/fail gate wired into the session lifecycle rather than a separate test phase: a wrap-time check that must pass before work is claimed complete, and a harness-floor self-test asserting the enforcement layer is actually wired in before a session proceeds (the EV-09 consistency check applied at start). Adversarial evaluation (EV-07) is realized as replay of prior attack transcripts against the current policy layer, so a bypass caught once is re-checked on every change rather than re-discovered. The architectural point: the qualifying results this regime produces are the same baseline the operational-assurance surface (→ §12) watches for drift against — evaluation and monitoring share one baseline, not two.
+
+**General pattern.** EV-04's define-the-bar-first requirement follows from the domain's failure class: a bar fitted to the change it was meant to gate qualifies nothing, because the change can no longer fail it. Evaluation that cannot overrule the change under evaluation is only slower approval.

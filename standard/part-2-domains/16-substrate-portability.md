@@ -1,27 +1,49 @@
 # AHES Part 2 §16 — Substrate Portability
 
-**Status: Stub — purpose fixed; requirements to be drafted per [clause template](clause-template.md).**
+**Status: Draft v0.1 — worked clause (normative shape complete; requirement set subject to review)**
 
 ## 16.1 Purpose
 
-Substrate portability governs the survival of harness identity, policy, and memory across substitution of the underlying model or harness runtime, with bounded and specified behavioral change. This is a testable conformance target, not an aspiration: a portability claim names what is invariant, what may vary, and the evaluation that demonstrates the bound. Unengineered, the failure class is substrate lock-in disguised as system identity — the 'system' is actually an artifact of one model version's dispositions.
+Substrate portability governs the survival of harness identity, policy, and memory across substitution of the underlying model or harness runtime, with bounded and specified behavioral change. This is a testable conformance target, not an aspiration: a portability claim names what is invariant, what may vary, and the evaluation that demonstrates the bound. Unengineered, the failure class is **substrate lock-in disguised as system identity** — the "system" is actually an artifact of one model version's dispositions, and a substitution silently changes behavior no one specified or measured. The domain's discipline is to make the governing content substrate-independent *by construction* rather than by convention, and to make the behavioral bound a measured quantity rather than a hope.
 
 ## 16.2 Required artifacts
 
-*TODO — `AHES-SP-A<n>` series.*
+- **AHES-SP-A1** — A **portability claim**: an explicit statement, per deployment, of what is invariant across substrate substitution (identity, policy, memory content), what may vary (surface phrasing, latency, ordering, bounded quality deltas), and the substitution set the claim covers (which models, which runtimes). Owner: harness architect; change control: versioned with the configuration baseline (→ §15).
+- **AHES-SP-A2** — A **portable governing payload schema**: the schema of the governance-shaped envelope carried across substitution boundaries, with required sections corresponding to each governing surface the harness depends on (mission, reasoning posture, constraints, tradecraft, memory, and execution-substrate concerns — the MxM construct surfaces where that reference architecture is used). Owner: payload maintainer; change control: schema-versioned.
+- **AHES-SP-A3** — A **dependency record** naming, for any externally-sourced portability mechanism, the pinned version consumed, the documented refresh procedure, and exactly which surface of the mechanism is adopted and which is deliberately not. Owner: harness maintainer; change control: baseline-versioned (→ §15).
 
 ## 16.3 Technical controls
 
-*TODO — `AHES-SP-<nn>` series.*
+- **AHES-SP-01** — A conformance claim of substrate portability **shall** be accompanied by a portability claim artifact (SP-A1) naming what is invariant, what may vary, and the covered substitution set. A claim that does not delimit its own bound **shall not** be treated as a portability claim.
+- **AHES-SP-02** — The invariant governing content **shall** be carried as a schema-defined portable payload (SP-A2) injected at every substitution boundary — every spawn, every worker, every model or runtime substitution — so that whatever executes receives the same governing structure in the same shape. The payload, not the model, **shall** be the carrier of identity, policy, and memory across substitution.
+- **AHES-SP-03** — Where the portability mechanism is externally sourced, it **shall** be consumed as a pinned, versioned dependency with a documented refresh procedure (→ §15), and the dependency record (SP-A3) **shall** state precisely which surface is adopted. A soft "we use the shared pattern" coupling that can drift from the actual pinned surface **shall not** be the basis of a conformance claim.
+- **AHES-SP-04** — The portability payload **shall** be brought in and owned by the consuming harness, not live-imported from a sibling source location. Portability tooling **shall not** bypass the harness's own self-containment boundary (→ §4 AE-07); it is vendored and owned, not referenced live.
+- **AHES-SP-05** — Authority carried across a substitution boundary **shall** be represented as an explicit, attributed, expirable grant object *inside the portable payload*, rather than assumed from ambient context (→ §9). Whose authority a spawned context acts under **shall** travel as data, not as convention.
+- **AHES-SP-06** — A portability claim **shall** be demonstrated by an evaluation that measures the behavioral delta across substitution while the payload is held constant, and that delta **shall** be bounded against the claim (SP-A1). The invariant surfaces (identity, policy decisions, memory content) **shall** show no change; the variable surfaces **shall** stay within the stated bound. A mechanism that carries the payload but is never measured across substitution demonstrates the carrier, not the portability (→ §11).
+- **AHES-SP-07** — The portable payload **should** carry the harness's reasoning-discipline contract — not only permissions and rules, but the required labeling of claims (e.g., distinguishing computed, inferred, and uncertain content) — so that epistemic discipline, not merely policy text, survives substitution.
+- **AHES-SP-08** — Memory carried across substitution **shall** be schema-defined and model-independent (→ §6), such that memory content survives substitution without depending on a particular model's serialization or recall behavior.
 
 ## 16.4 Verification criteria
 
-*TODO — one criterion minimum per shall; adversarial verification where the threat model includes the model.*
+| Control | Method |
+|---|---|
+| SP-01 | Inspection: a portability claim artifact exists and delimits invariant / variable / covered substitution set. |
+| SP-02 | Test: capture the injected payload at multiple substitution boundaries (different models/runtimes) and verify structural identity of the governing envelope. |
+| SP-03 | Inspection of the dependency record against the actually-installed version; analysis that the pinned surface matches what is consumed. **Adversarial check**: verify the mechanism cannot silently drift from the pinned version undetected. |
+| SP-04 | Inspection: no live import path into the mechanism's source location; the payload is vendored and owned (cross-check against §4 AE-07). |
+| SP-05 | Inspection: authority appears as an explicit expirable attributed grant within the payload; test that a spawned context's authority resolves from the payload, not ambient context. |
+| SP-06 | **Adversarial test**: substitute the underlying model/runtime with the payload held constant and measure the behavioral delta; verify invariant surfaces are unchanged and variable surfaces stay within the stated bound. This is the control that detects *silent* behavioral change under substitution — the domain's central threat. |
+| SP-07 | Inspection: the payload schema includes the reasoning-discipline/claim-labeling contract; demonstration that it is present in a spawned context. |
+| SP-08 | Analysis of the memory schema for model-independence; test that memory content re-hydrates identically across a substitution. |
 
 ## 16.5 Evidence requirements
 
-*TODO — runtime capture binding into §10.*
+The operating harness **shall** capture, for each substitution event: the model/runtime substituted from and to; the payload version and schema version injected; the authority grant object carried; and, for any portability claim under test, the behavioral-delta evaluation result against the stated bound (→ §11). These records **shall** be sufficient to answer, post-hoc: *what was substituted, what governing payload traveled, under whose authority, and whether behavior stayed within the claimed bound.* Evidence flows into the §10 evidence architecture; retention follows the configuration-baseline retention rule (§15).
 
 ## 16.6 Informative examples
 
-*TODO — reference-implementation realizations.*
+**A dedicated portability kernel (2026).** A reference implementation shipped as an installable, versioned package with a CLI entrypoint, whose entire purpose is to be the thing that travels across substrates — infrastructure for governance-porting rather than a single deployment doing its own governance. It defines a strict schema for the governing envelope injected at every spawn, with required top-level sections corresponding to each MxM construct surface (SP-A2) — functionally, this standard's own domain vocabulary expressed as an enforced schema, independent cross-check that the construct vocabulary is load-bearing in shipped tooling rather than a documentation-only convention. A spawned worker's authority is carried as an explicit, expirable, attributed grant object *inside* the portable payload (SP-05), and the payload additionally carries a required claim-labeling contract so that reasoning discipline, not just rules, travels across substitution (SP-07). Distribution, versioning, and a documented conformance mapping back to its upstream pattern are ordinary package-engineering practice applied to a governance artifact — which is precisely what makes portability testable rather than asserted.
+
+**A consuming harness (a governed console for a non-Anthropic model CLI, 2026).** Adoption evidence that the kernel is used by an independent harness, not merely published: the console consumes the orientation-packet builder as a pinned, versioned dependency with a documented refresh procedure and a record of which surface is adopted and which is deliberately not (SP-03, SP-A3), and its own scope-boundary policy prohibits live coupling to the kernel's source location — the mechanism is brought in and owned, not imported live (SP-04). The realization is an honest *partial*: only the orientation-packet slice of the kernel's fuller surface is consumed, and — importantly for SP-06 — no evaluation was found that measures *what changes* when the underlying model/CLI is substituted while the payload stays constant. The mechanism for carrying identity/policy/memory across substitution exists; the behavioral-delta measurement that would discharge the conformance target does not yet. That gap is exactly why SP-06 makes the measured bound, not the carrier alone, the requirement.
+
+**General pattern.** The two artifacts above separate the thing-ported from an instance-of-porting-it, and together they show §16 describes a buildable artifact class rather than a design aspiration. But the persistent gap across both — a shipped, schema-defined carrier with no behavioral-delta evaluation across substitution — is the domain's recurring lesson: a portability *mechanism* is necessary and insufficient; the conformance claim lives in the *measurement* (SP-06).

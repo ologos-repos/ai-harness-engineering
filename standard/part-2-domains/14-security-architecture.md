@@ -1,27 +1,51 @@
 # AHES Part 2 §14 — Security Architecture
 
-**Status: Stub — purpose fixed; requirements to be drafted per [clause template](clause-template.md).**
+**Status: Draft v0.1 — worked clause (normative shape complete; requirement set subject to review)**
 
 ## 14.1 Purpose
 
-Security architecture governs identity, least privilege, credential boundaries, containment, and data protection across the harness — including the boundary between what models can read and what only the harness may hold. Unengineered, the failure classes are credential exposure into model context and privilege aggregation across tools that were individually least-privileged.
+Security architecture governs identity, least privilege, credential boundaries, containment, and data protection across the harness — including the boundary between what models can read and what only the harness may hold. Unengineered, the failure classes are **credential exposure into model context** and **privilege aggregation** across tools that were individually least-privileged. Where §13 governs whether an external component can be trusted on the way *in*, this domain governs what the harness protects once components are inside: the privilege boundaries a compromised-but-admitted component runs against, the credentials it must not reach, and the containment that bounds its blast radius. A supply-chain compromise (§13) becomes a security-boundary event the moment the component executes; the containment control here is the mitigation for that handoff (→ §13).
+
+The distinguishing feature of a harness security architecture is that the model is inside the trust boundary but is not itself trusted with everything the harness holds. The read/hold boundary — what a model may be shown versus what only harness code may possess — is the load-bearing structure; when it is conventional rather than enforced, a single injection or context-compaction event can move a secret across it.
 
 ## 14.2 Required artifacts
 
-*TODO — `AHES-SA-A<n>` series.*
+- **AHES-SA-A1** — An **identity-and-privilege model** enumerating every agent and tool identity in the harness, the principal authority each acts under (→ §9), and the permission scope each holds. Default disposition is deny; a granted capability is an explicit entry. Owner: the harness maintainer. Change control: versioned with the configuration baseline (→ §15); a grant change is a baseline change.
+- **AHES-SA-A2** — A **credential inventory and boundary map** listing every credential the harness uses, the component that holds it, its scope and rotation mechanism, and — explicitly — which credentials **shall never** enter model context, memory, or logs. Owner: the harness maintainer. Change control: credentials live in source outside memory (secret store / `.env` / credential manager); this artifact records pointers and boundaries, never secret values.
+- **AHES-SA-A3** — A **data-classification and containment policy** defining data classes handled by the harness, the surfaces each class may reach (context, memory, logs, external egress), and the containment boundaries (filesystem, network, process) within which agent execution is bounded. Owner: the harness maintainer under the principal's authority. Change control: versioned with A1.
 
 ## 14.3 Technical controls
 
-*TODO — `AHES-SA-<nn>` series.*
+- **AHES-SA-01** — Every tool and agent identity **shall** be granted the minimum authority its function requires, with a default-deny disposition. A capability not explicitly granted is denied; ambient or inherited authority beyond the recorded grant (AHES-SA-A1) is a conformance defect.
+- **AHES-SA-02** — Credentials **shall** be held by the harness and **shall not** be placed into model context, memory, or evidence logs. A model invocation that needs a credentialed capability **shall** receive a capability reference the harness resolves — not the raw secret — so that the credential is exercised without being disclosed to the model. Redaction at the logging boundary is required, not optional (→ §10).
+- **AHES-SA-03** — Privilege aggregation **shall** be evaluated, not just per-tool least privilege: no reachable composition of individually-least-privileged tools **shall** aggregate into an escalated capability the identity model (AHES-SA-A1) does not sanction. The aggregate authority of an agent's full toolset is the quantity that **shall** be bounded, not each tool in isolation.
+- **AHES-SA-04** — Every side-effecting action **shall** be attributable to an agent identity and to the principal authority that identity acted under (→ §9). An action the harness cannot attribute to a bounded authority **shall not** execute; identity confusion — acting under the wrong or no principal — is a denial condition, not a logged anomaly.
+- **AHES-SA-05** — Agent execution **shall** be contained within declared boundaries (filesystem, network egress, process, resource), so that the blast radius of a compromised component is bounded to its containment scope rather than the harness's full authority. This is the mitigation for the §13 handoff: a compromised-but-admitted dependency (→ §13) executes against this boundary, and the boundary is enforced pre-execution through the same mechanism as policy hard-stops (→ §7), independent of model reasoning.
+- **AHES-SA-06** — Data protection **shall** be enforced at the harness boundaries: data classes designated non-egressable (AHES-SA-A3) **shall not** reach external surfaces, memory, or logs without passing the boundary control for that class. Sensitive data reaching a durable store or an external send is a defect regardless of whether a model or harness code placed it there.
+- **AHES-SA-07** — Privilege, containment, and credential boundaries **shall** be enforced structurally, at a pre-execution enforcement point, independent of model reasoning — the same structural layer §7 requires for policy hard-stops. A boundary that depends on the model's cooperation to hold is a judgment-layer control (→ §7) and **shall not** be claimed as a security boundary.
+- **AHES-SA-08** — Credentials **shall** be rotatable and revocable without rebuilding the harness, and a revoked or expired credential **shall** fail closed (deny the capability) rather than fall back to an unauthenticated or cached-authority path. Rotation **shall not** require editing memory or context, consistent with AHES-SA-02.
+- **AHES-SA-09** — The read/hold boundary — what a model may be shown versus what only harness code may hold — **shall** be explicit in the boundary map (AHES-SA-A2) and enforced structurally, not by convention. Moving a hold-only item across the boundary into model-readable context **shall** require an authorized, recorded action, so that context compaction, injection, or a broadened retrieval query cannot silently relocate a secret.
 
 ## 14.4 Verification criteria
 
-*TODO — one criterion minimum per shall; adversarial verification where the threat model includes the model.*
+| Control | Method |
+|---|---|
+| SA-01 | Inspection of the identity/privilege model; **adversarial test** that an identity attempting an ungranted capability is denied by default rather than permitted by omission. |
+| SA-02 | **Adversarial test**: attempt credential extraction via prompt injection, context-dump requests, and log inspection; verify the model receives only capability references and that logs are redacted (→ §10). |
+| SA-03 | Analysis: enumerate the reachable tool compositions for each agent identity and demonstrate no composition aggregates into an unsanctioned capability. **Adversarial test** of the highest-value aggregation paths. |
+| SA-04 | Test: an action with absent or mismatched principal attribution is denied (→ §9). Inspection of the attribution recorded per action. |
+| SA-05 | **Adversarial test**: a fault-injected / simulated-compromised component attempts to act beyond its containment scope (filesystem, network egress, process) and is bounded. Demonstration that the boundary is enforced pre-execution (→ §7, → §13). |
+| SA-06 | Test with tagged sensitive data: attempt egress to external surface, memory, and logs; verify boundary control blocks each unauthorized path. |
+| SA-07 | Demonstration that boundaries hold when the model is adversarially prompted to breach them — i.e., enforcement does not depend on model cooperation (→ §7). |
+| SA-08 | Test: revoke a credential and demonstrate the capability fails closed; demonstrate rotation without harness rebuild or memory edit. |
+| SA-09 | **Adversarial test**: attempt to move a hold-only secret into model-readable context via injection, an over-broad retrieval query, and a compaction-boundary event; verify the relocation requires an authorized, recorded action. |
 
 ## 14.5 Evidence requirements
 
-*TODO — runtime capture binding into §10.*
+The operating harness **shall** capture: every privilege or containment denial (identity, attempted capability, matched boundary, timestamp); every credential-boundary event (capability reference resolved, without the secret value); every attribution decision binding an action to an identity and principal authority (→ §9); and every rotation/revocation event. Evidence **shall not** itself become a disclosure surface — credential values and hold-only data are redacted at capture, per AHES-SA-02. This is sufficient to answer, post-hoc: *what identity acted, under whose authority, against which boundaries, and whether any credential or hold-only datum crossed a boundary it should not have*. Evidence flows into the §10 evidence architecture; the credential-redaction obligation is a shared requirement with §10 rather than a duplicate one.
 
 ## 14.6 Informative examples
 
-*TODO — reference-implementation realizations.*
+**Credential boundary by pointer, not copy (pattern).** One reference deployment enforces AHES-SA-02 and AHES-SA-09 as a standing rule: secrets live only in source (a secret store / `.env`), and the durable memory layer holds pointers to them, never copies — a rule slated for structural enforcement by a memory-write gate so that a credential-bearing write is refused at the boundary rather than caught in review. The same deployment resolves credentialed capabilities on the harness side so the model exercises a capability without being shown the secret, keeping the read/hold boundary enforced rather than conventional.
+
+**General pattern.** SA-05 and SA-07 are the same structural mechanism §7 specifies for policy hard-stops, pointed at a different threat: the model is inside the trust boundary but not trusted with the harness's full authority, so containment and credential boundaries that depend on the model's cooperation are judgment-layer controls and cannot discharge a security requirement. This is why the §13 → §14 handoff resolves to a *structural* control — a compromised dependency executing against a boundary the model could talk its way past would leave the standard's security floor advisory.
