@@ -18,6 +18,8 @@ No standard identified in the survey behind this document specifies the engineer
 
 Emerging agentic-AI standards work (NIST AI Agent Standards Initiative; IEEE P3709, P7022, P3394) addresses fragments, but is unpublished or pre-standardization. AHES integrates the published substrate into a coherent discipline and specifies what the substrate leaves open.
 
+**This is distinct from "no one has written about harness engineering."** A substantial practitioner and industry literature already uses that exact term — OpenAI, Anthropic, Martin Fowler's blog, LangChain, and others have published essays on it, predating AHES by months; see [`references/industry-practice.md`](references/industry-practice.md) for the full, attributed account. That literature is essayistic: patterns and principles, no mechanism for an independent party to check conformance. Its domain boundaries converge closely with AHES's own sixteen — evidence the taxonomy is well-founded, not a competing claim to priority. AHES's actual contribution is the normative apparatus laid over that shared territory: numbered `shall` requirements, verification criteria, and conformance levels, credited to the practitioners whose real-world convergence AHES formalizes.
+
 ## Structure
 
 | Part | Title | Status |
@@ -30,6 +32,7 @@ Emerging agentic-AI standards work (NIST AI Agent Standards Initiative; IEEE P37
 | [Part 5](standard/part-5-conformance.md) | Conformance levels and assessment | Drafted — assessment procedure, claim format, OAgents crosswalk |
 | [Annex A](standard/annex-a-reference-implementations.md) | Reference-implementation conformance studies (informative) | Drafted — 5 entries indexed (4 real exemplars + the synthetic composite) |
 | [Normative references](references/normative-references.md) | Standards base with verification status | Drafted |
+| [Industry practice](references/industry-practice.md) | Practitioner "harness engineering" literature — attributed prior art, convergence with AHES's domains | Drafted — 9 sources |
 | [Model construct](model-construct/) | Worked realizations: 4 real-deployment exemplars + 1 synthetic composite | thinx, grok-console, mxh-p, thinx-codex, and the all-16-domain AHES Reference Harness |
 
 ## Normative stack
