@@ -45,7 +45,7 @@ AHES builds on, and does not replace:
 
 ## Provenance and related work
 
-- **Theoretical basis:** the [Harness Engineering research programme](https://github.com/agent-harness-engineering/harness-engineering) (Lakatos-governed; MxM reference architecture). The programme supplies theory and conformance evidence; AHES supplies the normative layer. Content reused under CC BY 4.0 with attribution.
+- **Theoretical basis:** the [Harness Engineering research programme](https://github.com/agent-harness-engineering/harness-engineering) (Lakatos-governed; **MxM** — multi-mode meta-harness — reference architecture). The programme supplies theory and conformance evidence; AHES supplies the normative layer. Content reused under CC BY 4.0 with attribution.
 - **Complementary standard:** [OAgents-standard](https://github.com/ologos-corp) — organizational assurance profile (NIST AI RMF). OAgents specifies *who attests and at what level*; AHES specifies *how the artifact is engineered*. Cross-referenced in Part 5; the two do not overlap.
 
 ## Attribution
