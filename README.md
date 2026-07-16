@@ -29,6 +29,7 @@ Emerging agentic-AI standards work (NIST AI Agent Standards Initiative; IEEE P37
 | [Part 4](standard/part-4-risk-control-mapping.md) | Risk-to-control mapping | Skeleton |
 | [Part 5](standard/part-5-conformance.md) | Conformance levels and assessment | Skeleton |
 | [Normative references](references/normative-references.md) | Standards base with verification status | Drafted |
+| [Model construct](model-construct/) | Worked realizations against real deployments (grok-console, mxh-p) | §4/§7/§10/§16 realized |
 
 ## Normative stack
 

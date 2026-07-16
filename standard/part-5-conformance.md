@@ -25,4 +25,4 @@ Complementary, non-overlapping: **OAgents** profiles *organizational assurance* 
 - Per-level requirement selection tables (which Part 2 `shall`s bind at L1 vs L2 vs L3)
 - Assessment procedure: scoping statement, clause applicability matrix, sampling rules for evidence review
 - Claim format: a conformance claim names the AHES version, level, configuration baseline (§15) assessed, and the date — claims do not survive baseline changes unassessed
-- Reference-implementation conformance studies as informative annexes (candidate subjects: thinx (Claude Code), ThinxS (Go), nemo-harness)
+- Reference-implementation conformance studies as informative annexes (candidate subjects: thinx (Claude Code), ThinxS (Go), nemo-harness). [`model-construct/`](../model-construct/) has begun this against grok-console and mxh-p for §4/§7/§10/§16; **thinx-codex-03**'s fail-closed CI conformance gates (`conformance_gate.py` et al., requirement/architecture/verification trace IDs) are a strong candidate for the Part 5 assessment-procedure exemplar specifically, flagged but not yet reviewed in depth

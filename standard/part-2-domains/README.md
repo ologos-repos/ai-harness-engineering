@@ -24,3 +24,5 @@ Sixteen domains. Each is a normative clause with the fixed shape defined in [the
 | 16 | [Substrate portability](16-substrate-portability.md) | Identity/policy/memory survival across model and runtime substitution | Stub |
 
 Domains 9 and 16 extend the original fourteen-domain analysis: agent identity is not principal authority (§9), and portability is a testable conformance target rather than a mediation footnote (§16).
+
+Worked realizations against real deployments — beyond the informative examples inline in each clause — live in [`model-construct/`](../../model-construct/): a second, substrate-independent realization of §7, plus §4/§10/§16 realizations not yet drafted inline here.
