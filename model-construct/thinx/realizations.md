@@ -138,7 +138,7 @@ Realizes evaluation as a gate wired into the session lifecycle rather than a sep
 | AHES concern | Pattern observed | How thinx satisfies it |
 |---|---|---|
 | EV-01 gate before completion | Wrap-time pass/fail | A wrap-time check that must pass before work is claimed complete |
-| EV-09 consistency check at start | Harness-floor self-test | A self-test asserting the enforcement layer is actually wired in before a session proceeds |
+| PE-07 document↔inventory consistency check | Harness-floor self-test | A self-test asserting the enforcement layer is actually wired in before a session proceeds (this is a §7 policy-enforcement control, not an §11 evaluation one — corrected 2026-07-16 from a wrong ID) |
 | EV-07 adversarial evaluation | Attack-transcript replay | Replay of prior attack transcripts against the current policy layer, so a bypass caught once is re-checked on every change rather than re-discovered |
 
 The qualifying results this regime produces are the same baseline the §12 operational-assurance surface watches for drift against — one baseline, not two.

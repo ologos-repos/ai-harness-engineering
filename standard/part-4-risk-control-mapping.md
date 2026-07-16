@@ -1,6 +1,6 @@
 # AHES Part 4 — Risk-to-Control Mapping
 
-**Status: Draft v0.1 — risk register framed (§4.2); per-risk control traces drafted (§4.3). Mitigating-requirement citations are by Part 2 domain name/number pending finalization of Part 2 requirement IDs; a consistency pass will backfill exact IDs.**
+**Status: Draft v0.1 — risk register framed (§4.2); per-risk control traces drafted (§4.3). Part 2's requirement IDs are now stable; most mitigating-requirement citations are still by domain name/number for readability, with exact IDs cited where a specific control is the load-bearing one (e.g., R10→SP-06, R14→PE-08). A full backfill pass to exact IDs throughout, and the reverse Part 2→risk trace, remain open (§4.4).**
 
 ## 4.1 Purpose
 
@@ -31,7 +31,7 @@ The table is the index; §4.3 carries the full entry for each row. Every risk in
 
 Each entry has a fixed shape: **risk statement · affected quality characteristics (→ Part 3) · mitigating requirements (Part 2 domains) · verification pointer (the domain §N.4 that catches a mitigation failure) · residual · acceptance authority.** Every entry names a non-empty residual: a full-mitigation risk with zero residual is a red flag, because no harness control fully eliminates the underlying model or operational uncertainty — a claimed zero residual is more likely an unexamined boundary than a solved problem.
 
-Mitigating requirements are cited by domain name and number, not by exact requirement ID, because Part 2's per-domain IDs are being finalized concurrently. A consistency pass will backfill exact IDs where a specific control is the load-bearing one.
+Mitigating requirements are mostly cited by domain name and number rather than exact requirement ID, for readability across a register this size — Part 2's IDs are stable, this is a style choice, not a placeholder. Exact IDs are cited directly where one specific control is the load-bearing mitigation (e.g., R10, R14 below); a pass to backfill exact IDs throughout the remaining entries is open work (§4.4).
 
 ### R1 — Prompt injection (direct and via retrieved/tool content)
 
@@ -109,11 +109,11 @@ Mitigating requirements are cited by domain name and number, not by exact requir
 
 **Affected quality characteristics.** Security (primary), Transparency, Maintainability.
 
-**Mitigating requirements.** §2 Context engineering — provenance and content controls governing what may enter context; §6 Memory engineering — scope, provenance, expiration, and a store discipline that holds pointers to secrets rather than copies; §14 Security architecture — credential boundaries, least privilege, and containment so secrets are not reachable into the harness's durable surfaces in the first place.
+**Mitigating requirements.** §2 Context engineering — provenance and content controls governing what may enter context; §6 Memory engineering — scope, provenance, expiration, and a store discipline that holds pointers to secrets rather than copies; §14 Security architecture — credential boundaries, least privilege, and containment so secrets are not reachable into the harness's durable surfaces in the first place. The evidence-log surface named in the risk statement is **not** currently covered by a §10 control: §10's evidence architecture (as specified) has no content-redaction or secret-scrubbing requirement, so a secret that reaches a captured action is preserved by the evidence store rather than filtered by it. This is a real, named gap in the current requirement set, not an oversight in this entry — a future revision adding a §10 redaction control is the natural fix.
 
-**Verification pointer.** §14's credential-boundary verification and §6's expiration/scope verification. A failure surfaces as a credential-bearing value found in a memory store or evidence log during inspection.
+**Verification pointer.** §14's credential-boundary verification and §6's expiration/scope verification. A failure surfaces as a credential-bearing value found in a memory store or evidence log during inspection. The evidence-log surface specifically has no verification method today, since no control governs it.
 
-**Residual.** Data whose sensitivity is not recognized at write time (an unrecognized secret format, sensitive content in free text) escapes format-based controls; evidence capture inherently records inputs and actions, so a disclosure that occurs *within* a legitimately captured action is preserved by the evidence architecture itself.
+**Residual.** Data whose sensitivity is not recognized at write time (an unrecognized secret format, sensitive content in free text) escapes format-based controls; evidence capture inherently records inputs and actions, so a disclosure that occurs *within* a legitimately captured action is preserved by the evidence architecture itself — for this surface specifically, the residual is the entire surface, not an edge case of an otherwise-covered control.
 
 **Acceptance authority.** §8 Human authority — accepts the residual of unrecognized-sensitivity data; where the disclosure boundary is a principal-scope question, §9 co-governs.
 

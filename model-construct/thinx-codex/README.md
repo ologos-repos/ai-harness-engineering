@@ -2,7 +2,7 @@
 
 **Subject:** `ologos-repos/thinx-codex` (private, canonical development repository — not one of its deployment snapshots or host-profile repos) — a Codex-native governed agent workspace and console, sibling to thinx-Claude, expressing governance through the same MxM (multi-mode meta-harness) construct shape.
 
-**Substrate:** OpenAI Codex — an Anthropic-substrate sibling in construct philosophy, but the mechanism documented here is substrate-independent: it operates on *authored governance artifacts*, not on model behavior at runtime.
+**Substrate:** OpenAI Codex — a distinct model vendor from thinx's Anthropic substrate, sharing thinx's MxM construct philosophy but not its model provider. The mechanism documented here is itself substrate-independent regardless: it operates on *authored governance artifacts*, not on model behavior at runtime.
 
 **Why this exemplar.** Every other entry in this directory (grok-console, mxh-p) demonstrates a *runtime* enforcement mechanism — a policy gate, an evidence writer, a portability envelope injected at spawn. thinx-codex is the only exemplar in the standard that demonstrates **automated, CI-enforced structural conformance checking**: a family of gate scripts, run on every change through continuous integration, that read the harness's own authored strategy/requirements/architecture/verification artifacts and *fail the build* when their structural integrity rules are violated — a fail-closed control that blocks a non-conforming change from merging, not a policy document describing what conformance would mean.
 

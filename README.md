@@ -14,7 +14,7 @@ The harness comprises: model interfaces, prompts and context, retrieval, memory,
 
 ## The gap this standard fills
 
-No published standard specifies the engineering of the AI harness as a discipline. ISO/IEC 5338:2023 provides the nearest lifecycle spine; ISO/IEC/IEEE 15288 and 12207 provide the systems/software engineering base; ISO/IEC 25059 provides an AI quality model; ISO/IEC 23894 and the NIST AI RMF provide risk structure; ISO/IEC 42001 provides organizational governance. **None of them specifies harness architecture** — model gateways, context construction, prompt governance, tool registration, agent state, authorization mediation, memory boundaries, evidence capture, orchestration topology, model substitution, or runtime containment.
+No standard identified in the survey behind this document specifies the engineering of the AI harness as a discipline. ISO/IEC 5338:2023 provides the nearest lifecycle spine; ISO/IEC/IEEE 15288 and 12207 provide the systems/software engineering base; ISO/IEC 25059 provides an AI quality model; ISO/IEC 23894 and the NIST AI RMF provide risk structure; ISO/IEC 42001 provides organizational governance. **None of them specifies harness architecture** — model gateways, context construction, prompt governance, tool registration, agent state, authorization mediation, memory boundaries, evidence capture, orchestration topology, model substitution, or runtime containment. This is a claim about the standards this survey found, not a claim to have exhaustively searched every published standard.
 
 Emerging agentic-AI standards work (NIST AI Agent Standards Initiative; IEEE P3709, P7022, P3394) addresses fragments, but is unpublished or pre-standardization. AHES integrates the published substrate into a coherent discipline and specifies what the substrate leaves open.
 
@@ -28,7 +28,7 @@ Emerging agentic-AI standards work (NIST AI Agent Standards Initiative; IEEE P37
 | [Part 3](standard/part-3-quality-allocation.md) | Quality characteristic allocation | Drafted — allocation rule + incident-separability test |
 | [Part 4](standard/part-4-risk-control-mapping.md) | Risk-to-control mapping | Drafted — all 14 risks as full entries |
 | [Part 5](standard/part-5-conformance.md) | Conformance levels and assessment | Drafted — assessment procedure, claim format, OAgents crosswalk |
-| [Annex A](standard/annex-a-reference-implementations.md) | Reference-implementation conformance studies (informative) | Drafted — 4 exemplars indexed |
+| [Annex A](standard/annex-a-reference-implementations.md) | Reference-implementation conformance studies (informative) | Drafted — 5 entries indexed (4 real exemplars + the synthetic composite) |
 | [Normative references](references/normative-references.md) | Standards base with verification status | Drafted |
 | [Model construct](model-construct/) | Worked realizations: 4 real-deployment exemplars + 1 synthetic composite | thinx, grok-console, mxh-p, thinx-codex, and the all-16-domain AHES Reference Harness |
 

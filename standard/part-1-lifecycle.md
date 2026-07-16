@@ -10,7 +10,7 @@ AHES does not restate those processes. This part specifies only the *harness-spe
 
 ## 1.2 Harness-specific process insertions
 
-The seven insertions below are summarized in the table, then specified individually in §1.2.1–§1.2.7. Each subsection names the trigger, the artifact produced or updated, the lifecycle process it attaches to, and the normative statements that make the insertion enforceable.
+The eight insertions below are summarized in the table, then specified individually in §1.2.1–§1.2.8. Each subsection names the trigger, the artifact produced or updated, the lifecycle process it attaches to, and the normative statements that make the insertion enforceable.
 
 | Insertion | Attaches to (15288/12207 process) | Concern |
 |---|---|---|
@@ -21,6 +21,7 @@ The seven insertions below are summarized in the table, then specified individua
 | Policy baseline release | Configuration Management / Quality Assurance | Policy document + enforcement inventory released as one consistent unit, with the §7 self-test as release gate |
 | Evidence retention and disposal | Information Management / Disposal | Evidence has a defined retention life tied to accountability requirements, and a defined disposal that does not orphan open conformance claims |
 | Harness decommissioning | Disposal | Retirement of a harness disposes of credentials, memory, and evidence deliberately — not by abandonment |
+| Evaluation-regime change control | Configuration Management / Quality Assurance | The evaluation suite is the gate every other insertion above relies on (→ AHES-LC-02, LC-04); a threshold, test case, or adversarial-corpus change is itself a baseline change requiring the same rigor as what it gates |
 
 ### 1.2.1 Prompt and instruction change control
 
@@ -97,6 +98,17 @@ The seven insertions below are summarized in the table, then specified individua
 **Lifecycle attachment.** Disposal (15288 / 12207). A retired harness that is abandoned rather than decommissioned leaves live credentials, readable memory, and orphaned evidence behind.
 
 - **AHES-LC-13** — Decommissioning a harness **shall** revoke or transfer its credentials and third-party access, and **shall** dispose of or archive its durable memory and evidence according to the retention schedule (§1.2.6) — not by abandonment. Evidence still under an active retention obligation at decommissioning **shall** be transferred to a custodian, not destroyed.
+
+### 1.2.8 Evaluation-regime change control
+
+**Trigger.** Any change to the §11 evaluation regime itself: a pass/fail threshold, an added or removed test case, a change to the adversarial-test corpus, or a change to what counts as the qualification baseline (→ §11 EV-A1/EV-A2).
+
+**Artifact.** A versioned evaluation-regime baseline with a change record naming the author, the reviewing authority, the diff, and the rationale — structurally identical to §1.2.1's instruction-change-control artifact, because the evaluation regime is exactly as behavior-bearing as the instructions it gates (→ §11 Evaluation for the regime itself, → §15 Configuration baseline for the version anchor, since AHES's own configuration-baseline definition in Part 0 already names "evaluations" as a first-class baseline element).
+
+**Lifecycle attachment.** Configuration Management and Quality Assurance (12207). This insertion exists because every other insertion in this part ultimately answers to the evaluation regime: AHES-LC-02 gates instruction changes against it, AHES-LC-04 re-verifies allocation against it after a model substitution, and Part 5's AHES-CF-01 through CF-09 treat "evaluations" as a baseline element whose change triggers re-assessment. A gate that can itself be loosened or narrowed with no change control is a gate in name only — the regime needs the same rigor as what it gates, not less.
+
+- **AHES-LC-14** — A change to the evaluation regime **shall** be held under version control as a configuration item, traceable to an author and a reviewer distinct from the author, with the rationale recorded (→ §15). A threshold loosened, a test case removed, or an adversarial case dropped from the corpus **shall** be visible in that record — the change control exists specifically so a weakening of the gate cannot happen silently.
+- **AHES-LC-15** — A change to the evaluation regime **shall not** be self-qualified by that same regime: the reviewer required by AHES-LC-14 **shall** independently assess whether the change narrows coverage in a way that would let a previously-caught regression pass, since the regime cannot be trusted to catch a defect in itself. A regime change that narrows coverage **shall** be justified in the change record, not merely logged.
 
 ## 1.3 Recursion note
 

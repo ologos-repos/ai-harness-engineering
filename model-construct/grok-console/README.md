@@ -2,7 +2,7 @@
 
 **Subject:** `ologos-repos/grok-console` (private) — **ologos-grok**, Ologos Corp's governed instance of xAI's Grok Build CLI, wrapped in a local-first super-admin web UI.
 
-**Substrate:** xAI Grok, via the Grok Build CLI — independent of the Anthropic-substrate exemplars (thinx, thinx-codex) cited elsewhere in this standard. Governance is expressed through the same MxM construct shape (mission / mind / morals / methods / memory / means) as the other exemplars, but every enforcement mechanism is a distinct implementation.
+**Substrate:** xAI Grok, via the Grok Build CLI — independent of thinx's Anthropic substrate and thinx-codex's OpenAI Codex substrate, making the exemplar set span three distinct model vendors. Governance is expressed through the same MxM construct shape (mission / mind / morals / methods / memory / means) as the other exemplars, but every enforcement mechanism is a distinct implementation.
 
 **Why this exemplar.** AHES's controls are only credible as substrate-agnostic if they hold on a harness that wasn't designed with AHES (or thinx's own patterns) in mind. grok-console independently arrived at: a deny-pattern safety catalog instead of a hook dispatcher, a schema-first evidence architecture, explicit per-agent-role contracts, and — most significantly — a *versioned, generic portability package* rather than a bespoke governance-porting effort. That last point does real work for §16: portability stops being an aspiration once a real package exists that more than one independent harness depends on.
 

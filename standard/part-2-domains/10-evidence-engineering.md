@@ -46,7 +46,7 @@ These are *meta*-requirements — what the evidence architecture must guarantee 
 
 - **Tamper-evidence.** The store **shall** make unauthorized modification or deletion of committed records detectable (EE-07); an evidence architecture that cannot vouch for itself cannot underwrite any other clause's audit claim.
 - **Retention.** Records **shall** be retained per the A3 retention policy, and for at least as long as the configuration baselines they reference are needed to reconstruct the recorded actions (→ §15). Disposal **shall** itself be an evidenced event.
-- **Completeness monitoring.** The schema and write-time validator guarantee that *committed* records are well-formed; they do **not** on their own guarantee that every action produced a record. Detection of missing-record conditions is an operational-assurance concern (→ §12) and **shall** be monitored there, not assumed here.
+- **Completeness monitoring.** The schema and write-time validator guarantee that *committed* records are well-formed; they do **not** on their own guarantee that every action produced a record. Detection of missing-record conditions is an operational-assurance concern (→ §12 AHES-OA-10) and **shall** be monitored there, not assumed here.
 - **Incident separability.** Captured evidence **shall** be sufficient to classify a failure by locus — model, harness, integrated system, or operating organization — from the record alone (→ Part 3 quality-allocation). The authority-class binding (EE-05) and baseline reference (EE-06) are the fields that make this decidable.
 
 ## 10.6 Informative examples
