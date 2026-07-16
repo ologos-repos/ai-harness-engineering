@@ -52,7 +52,7 @@ AHES builds on, and does not replace:
 
 ## Attribution
 
-Developed and maintained by **Ologos Corp**. Principal author: JD Longmire (ORCID: [0009-0009-1383-7698](https://orcid.org/0009-0009-1383-7698)).
+Developed and maintained by **Ologos Corp**. Co-authors: JD Longmire (ORCID: [0009-0009-1383-7698](https://orcid.org/0009-0009-1383-7698)), Micah Longmire (ORCID: [0009-0006-7608-9322](https://orcid.org/0009-0006-7608-9322)).
 
 ## License
 
