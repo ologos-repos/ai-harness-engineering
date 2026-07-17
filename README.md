@@ -1,6 +1,6 @@
 # AI Harness Engineering Standard (AHES)
 
-**An Ologos product.** Normative engineering standard for the *AI harness* — the engineered software and control environment surrounding one or more AI models.
+**An Ologos product.** Normative engineering standard for the *AI harness* — the engineered software and control environment surrounding one or more AI models. Its requirements are written to hold over two substrate kinds: a **raw model API**, and — distinctively — a **coding agent / assistant CLI that is itself already a harness** (Claude Code, OpenAI Codex, a Grok CLI). Governing the second is a *meta-harness*: harnessing the harness, not just the model. See [Part 0 §0.1](standard/part-0-scope-terms-conformance.md).
 
 **Status: Draft v0.1 — full normative draft.** All parts and all sixteen Part 2 domains are drafted with numbered requirements; nothing here has had independent/external review. Not yet released for conformance use.
 
@@ -32,7 +32,7 @@ Emerging agentic-AI standards work (NIST AI Agent Standards Initiative; IEEE P37
 | [Part 5](standard/part-5-conformance.md) | Conformance levels and assessment | Drafted — assessment procedure, claim format, OAgents crosswalk |
 | [Annex A](standard/annex-a-reference-implementations.md) | Reference-implementation conformance studies (informative) | Drafted — 5 entries indexed (4 real exemplars + the synthetic composite) |
 | [Normative references](references/normative-references.md) | Standards base with verification status | Drafted |
-| [Industry practice](references/industry-practice.md) | Practitioner "harness engineering" literature — attributed prior art, convergence with AHES's domains | Drafted — 9 sources |
+| [Industry practice](references/industry-practice.md) | Practitioner "harness engineering" literature — attributed prior art, naming/priority notes, convergence with AHES's domains, meta-harness distinction | Drafted — 10 sources |
 | [Model construct](model-construct/) | Worked realizations: 4 real-deployment exemplars + 1 synthetic composite | thinx, grok-console, mxh-p, thinx-codex, and the all-16-domain AHES Reference Harness |
 
 ## Normative stack
